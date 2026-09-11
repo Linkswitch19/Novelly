@@ -1,0 +1,9 @@
+﻿Qui va il progetto Ren'Py base.
+
+Come crearlo (una volta sola):
+1. Avvia tools/renpy-sdk/renpy.exe
+2. "Create New Project", nome "template"
+3. Copia il contenuto della cartella creata dentro questa cartella
+4. Cancella questo file e committa
+
+La cartella deve contenere: game/, con dentro gui/, script.rpy, options.rpy.
