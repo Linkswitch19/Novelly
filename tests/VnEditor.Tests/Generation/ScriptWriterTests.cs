@@ -64,7 +64,7 @@ public class ScriptWriterTests
         using (writer.Block("label start:"))
         {
             writer.Line("dentro");
-            writer.BlankLIne();
+            writer.BlankLine();
         }
 
         Assert.Equal("label start:\n    dentro\n\n", writer.Build());
