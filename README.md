@@ -30,7 +30,7 @@ dotnet run --project src/VnEditor.UI
 
 ## Versione Ren'Py
 
-Fissata a **8.3.4**. Non aggiornare senza aver rieseguito i test.
+Fissata a **8.5.3'**. Non aggiornare senza aver rieseguito i test.
 
 ## Licenze
 
