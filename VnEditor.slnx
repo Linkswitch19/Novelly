@@ -1,11 +1,10 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/VnEditor.Application/VnEditor.AppService.csproj" />
+    <Project Path="src/VnEditor.AppService/VnEditor.AppService.csproj" />
     <Project Path="src/VnEditor.Domain/VnEditor.Domain.csproj" />
     <Project Path="src/VnEditor.Infrastructure/VnEditor.Infrastructure.csproj" />
     <Project Path="src/VnEditor.UI/VnEditor.UI.csproj" />
   </Folder>
-  <Folder Name="/src/VnEditor.Application/" />
   <Folder Name="/tests/">
     <Project Path="tests/VnEditor.Tests/VnEditor.Tests.csproj" />
   </Folder>

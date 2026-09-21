@@ -1,7 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\VnEditor.Application\VnEditor.AppService.csproj" />
+    <ProjectReference Include="..\VnEditor.AppService\VnEditor.AppService.csproj" />
+    <ProjectReference Include="..\VnEditor.Domain\VnEditor.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
