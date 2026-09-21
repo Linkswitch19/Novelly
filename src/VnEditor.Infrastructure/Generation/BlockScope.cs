@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Text;
-using VnEditor.Application.Generation;
-
+﻿
 namespace VnEditor.Infrastructure.Generation;
 /// <summary>
 /// Rappresenta un blocco indentato aperto. Chiudendolo, l'indentazione torna

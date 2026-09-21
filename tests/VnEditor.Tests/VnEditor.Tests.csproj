@@ -22,4 +22,8 @@
     <ProjectReference Include="..\..\src\VnEditor.Infrastructure\VnEditor.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Fakes\" />
+  </ItemGroup>
+
 </Project>

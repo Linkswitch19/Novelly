@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
 
-namespace VnEditor.Application.Generation;
+namespace VnEditor.Domain.Generation;
 
 
 /// <summary>
@@ -16,7 +14,7 @@ public interface IScriptWriter
     /// <summary>Scrive una riga al livello di indentazione corrente.</summary>
     void Line(string text);
     /// <summary>scrive una riga vuota, senza identazione</summary>
-    void BlankLIne();
+    void BlankLine();
     ///<summary>
     /// Scrive l'intestazione e rientra di un livello fino alla chiusura.
     /// Da usare con <c>using</c>.

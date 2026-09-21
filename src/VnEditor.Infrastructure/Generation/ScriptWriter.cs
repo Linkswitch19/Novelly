@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using VnEditor.Application.Generation;
+using VnEditor.Domain.Generation;
 
 namespace VnEditor.Infrastructure.Generation;
 
@@ -14,7 +14,7 @@ public sealed class ScriptWriter : IScriptWriter,IIndentationScope
     private int _level;
 
 
-    public void BlankLIne() => this._builder.Append(LineEnding);
+    public void BlankLine() => this._builder.Append(LineEnding); 
 
     /// <summary>Restituisce lo script completo.</summary>
     public string Build() => this._builder.ToString();
