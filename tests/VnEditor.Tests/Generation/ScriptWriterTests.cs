@@ -1,5 +1,4 @@
 ﻿using VnEditor.Infrastructure.Generation;
-using Xunit;
 namespace VnEditor.Tests.Generation;
 
 public class ScriptWriterTests
