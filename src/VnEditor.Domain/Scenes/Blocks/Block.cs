@@ -22,6 +22,12 @@ public abstract class Block
     /// </summary>
     public virtual bool EndsScene => false;
 
-    /// <summary>Scrive le righe Ren'Py corrispondenti a questo evento.</summary>
-    public abstract void Generate(IScriptWriter writer, Project project);
+    public abstract string Summary(Project project);
+
+    /// <summary>
+    /// Affida il blocco a chi sa cosa farne. Ogni sottoclasse chiama
+    /// l'overload giusto, e il visitor riceve il tipo concreto senza
+    /// bisogno di controlli.
+    /// </summary>
+    public abstract void Accept(IBlockVisitor visitor);
 }

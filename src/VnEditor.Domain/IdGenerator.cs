@@ -21,7 +21,7 @@ public sealed class IdGenerator
         [typeof(Background)] = "bg_",
         [typeof(MusicTrack)] = "mus_",
         [typeof(Expression)] = "espr_",
-        [typeof(Scene)] = "scena_",
+        [typeof(Scene)] = "scene_",
     };
     private readonly Dictionary<string, int> _counters = [];
     /// <summary>
