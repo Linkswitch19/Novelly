@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using VnEditor.Domain.Assets;
 using VnEditor.Domain.Characters;
 using VnEditor.Domain.Scenes;
+using VnEditor.Domain.Variables;
 
 namespace VnEditor.Domain;
 /// <summary>
@@ -26,6 +27,7 @@ public sealed class Project
     public List<Background> Backgrounds { get; } = [];
     public List<MusicTrack> Music { get; } = [];
     public List<Scene> Scenes { get; } = [];
+    public List<Variable> Variables { get; } = [];
 
     public Character AddCharacter(string name)
     {
@@ -66,6 +68,43 @@ public sealed class Project
         return scene;
     }
 
+    public NumberVariable AddNumberVariable(string name, decimal initialValue)
+    {
+        NumberVariable variable = new()
+        {
+            Id = this._ids.Next<NumberVariable>(),
+            Name = name,
+            InitialValue = initialValue
+        };
+        Variables.Add(variable);
+        return variable;
+    }
+
+    public BooleanVariable AddBooleanVariable(string name, bool initialValue)
+    {
+        BooleanVariable variable = new()
+        {
+            Id = this._ids.Next<BooleanVariable>(),
+            Name = name,
+            InitialValue = initialValue
+        };
+        Variables.Add(variable);
+        return variable;
+    }
+
+    public TextVariable AddTextVariable(string name, string initialValue)
+    {
+        TextVariable variable = new()
+        {
+            Id = this._ids.Next<TextVariable>(),
+            Name = name,
+            InitialValue = initialValue
+        };
+
+        Variables.Add(variable);
+        return variable;
+    }
+
 
 
 
@@ -80,4 +119,8 @@ public sealed class Project
 
     public Scene? FindScene(string id) =>
         Scenes.FirstOrDefault(s => s.Id == id);
+
+    public Variable? FindVariable(string id) =>
+        Variables.FirstOrDefault(v=> v.Id == id);
+
 }
