@@ -4,11 +4,12 @@ using System.Text;
 using VnEditor.Domain.Assets;
 using VnEditor.Domain.Characters;
 using VnEditor.Domain.Scenes;
+using VnEditor.Domain.Variables;
 
 namespace VnEditor.Domain;
 /// <summary>
 /// Genera gli identificatori interni di tutte le entità del progetto,
-/// tenendo un contatore separato per ciascun tipo.
+/// tenendo un contatore separato per ciascun prefisso.
 /// Il contatore cresce sempre: eliminare un'entità non libera il suo numero,
 /// altrimenti si creerebbero Id duplicati.
 /// </summary>
@@ -22,6 +23,9 @@ public sealed class IdGenerator
         [typeof(MusicTrack)] = "mus_",
         [typeof(Expression)] = "espr_",
         [typeof(Scene)] = "scene_",
+        [typeof(NumberVariable)] = "var_",
+        [typeof(BooleanVariable)] = "var_",
+        [typeof(TextVariable)] = "var_",
     };
     private readonly Dictionary<string, int> _counters = [];
     /// <summary>
