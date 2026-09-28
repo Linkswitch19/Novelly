@@ -102,7 +102,6 @@ internal static class ProjectJsonOptions
                 candidate => candidate.Name == propertyName);
             // Dice al sistema: "Non creare una lista nuova, usa quella che c'è già e aggiungici dentro la roba"
             property.ObjectCreationHandling = JsonObjectCreationHandling.Populate;
-            property.IsRequired = true;
         }
     }
     /// <summary>

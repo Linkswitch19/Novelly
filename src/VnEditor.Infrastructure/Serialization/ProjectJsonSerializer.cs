@@ -48,6 +48,7 @@ public sealed class ProjectJsonSerializer : IProjectSerializer
         {
             using JsonDocument document = JsonDocument.Parse(content);
             ProjectJsonVersionValidator.Validate(document.RootElement);
+            ProjectJsonCollectionsValidator.Validate(document.RootElement);
 
             Project? project = document.RootElement.Deserialize<Project>(Options);
 
