@@ -48,10 +48,24 @@ public sealed class IdGenerator
     public void Restore(IReadOnlyDictionary<string, int> counters)
     {
         ArgumentNullException.ThrowIfNull(counters);
-        _counters.Clear();
-        foreach (var (prefix,value) in counters)
+        Dictionary<string, int> restored = new(counters);
+
+        foreach (KeyValuePair <string, int> counter in restored)
         {
-            _counters[prefix] = value;
+            if (string.IsNullOrWhiteSpace(counter.Key) || counter.Value < 0)
+            {
+                throw new ArgumentException(
+                     $"Contatore ID non valido: '{counter.Key}'.",
+                     nameof(counters));
+
+            }
+
+
+        }
+        this._counters.Clear();
+        foreach (KeyValuePair<string, int> counter in restored)
+        {
+            this._counters.Add(counter.Key, counter.Value);
         }
 
     }
