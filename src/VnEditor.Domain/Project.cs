@@ -14,8 +14,23 @@ public sealed class Project
 {
 
     private IdGenerator _ids = new();
+
+    public const int CurrentFormatVersion = 1;
     /// <summary>Versione del formato del file salvato.</summary>
-    public int FormatVersion { get; init; } = 1;
+    public int FormatVersion { get; init; } = CurrentFormatVersion;
+
+    /// <summary>
+    /// Contatori degli ID da conservare insieme al progetto.
+    /// La copia impedisce di modificare direttamente lo stato del generatore.
+    /// </summary>
+    public Dictionary<string,int> IdCounters
+    {
+        get => new Dictionary<string,int>(this._ids.Counters);
+        init => this._ids.Restore(value);
+
+    }
+
+
     /// <summary>Titolo del gioco.</summary>
     public required string Title { get; set; }
 
