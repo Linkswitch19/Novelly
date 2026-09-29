@@ -3,6 +3,7 @@
 using VnEditor.Domain.Scenes.Blocks;
 
 namespace VnEditor.Infrastructure.Generation;
+
 public static class RenpySyntax
 {
     public static string Label(string id)
@@ -32,7 +33,7 @@ public static class RenpySyntax
         string id,
         string name,
         string color)
-        => $"define {id} = Character(\"{name}\", color=\"{color}\")";
+        => $"define {id} = Character(\"{RenpyEscape.Text(name)}\", color=\"{color}\")";
 
     public const string Return = "return";
 

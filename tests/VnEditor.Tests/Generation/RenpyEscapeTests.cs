@@ -2,7 +2,10 @@
 
 
 namespace VnEditor.Tests.Generation;
-
+/// <summary>
+/// Verifica la protezione dei caratteri speciali e delle interruzioni di riga
+/// nel testo destinato allo script Ren'Py.
+/// </summary>
 public class RenpyEscapeTests
 {
     [Fact]
