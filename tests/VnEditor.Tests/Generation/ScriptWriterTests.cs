@@ -1,6 +1,8 @@
 ﻿using VnEditor.Infrastructure.Generation;
 namespace VnEditor.Tests.Generation;
-
+/// <summary>
+/// Verifica indentazione, righe vuote e terminazioni prodotte da ScriptWriter.
+/// </summary>
 public class ScriptWriterTests
 {
     [Fact]
@@ -49,11 +51,11 @@ public class ScriptWriterTests
     [Fact]
     public void LeRigheFinisconoConLfMaiConCrlf()
     {
-        var writer = new ScriptWriter();
+        ScriptWriter writer = new();
         writer.Line("prima");
         writer.Line("seconda");
 
-        Assert.DoesNotContain("\r", writer.Build());
+        Assert.Equal("prima\nseconda\n", writer.Build());
     }
 
     [Fact]
