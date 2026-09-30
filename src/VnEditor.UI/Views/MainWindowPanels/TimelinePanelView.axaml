@@ -1,0 +1,16 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:VnEditor.UI.ViewModels"
+             x:Class="VnEditor.UI.Views.MainWindowPanels.TimelinePanelView"
+             x:DataType="vm:MainViewModel">
+    <Border Padding="16" Background="White"
+            BorderBrush="#D9DEEA" BorderThickness="1" CornerRadius="6">
+        <Grid RowDefinitions="Auto,*">
+            <TextBlock Text="Timeline" FontSize="18" FontWeight="Medium" Foreground="#1C2850" />
+
+            <TextBlock Grid.Row="1" Text="Scene events will appear here."
+                       Foreground="#66718B" TextWrapping="Wrap"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+    </Border>
+</UserControl>

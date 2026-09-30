@@ -1,0 +1,28 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:VnEditor.UI.ViewModels"
+             x:Class="VnEditor.UI.Views.MainWindowPanels.DetailsPanelView"
+             x:DataType="vm:MainViewModel">
+    <Border Padding="16" Background="White"
+            BorderBrush="#D9DEEA" BorderThickness="1" CornerRadius="6">
+		<Grid RowDefinitions="Auto,*">
+			<Grid ColumnDefinitions="*,Auto">
+				<TextBlock Text="Details" FontSize="22" FontWeight="Medium"
+						   Foreground="#111D57" />
+				<TextBlock Grid.Column="1" Text="{Binding SelectedSectionTitle}"
+						   FontSize="13" Foreground="#66718B"
+						   VerticalAlignment="Center" />
+			</Grid>
+
+			<StackPanel Grid.Row="1" Spacing="8" MaxWidth="220"
+						HorizontalAlignment="Center" VerticalAlignment="Center">
+				<TextBlock Text="No item selected" FontSize="18"
+						   Foreground="#1C2850" TextAlignment="Center"
+						   TextWrapping="Wrap" />
+				<TextBlock Text="Details for a selected scene or event will appear here."
+						   FontSize="14" Foreground="#66718B"
+						   TextAlignment="Center" TextWrapping="Wrap" />
+			</StackPanel>
+		</Grid>
+    </Border>
+</UserControl>
