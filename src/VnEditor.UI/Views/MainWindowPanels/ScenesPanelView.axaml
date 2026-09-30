@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:VnEditor.UI.ViewModels"
+             x:Class="VnEditor.UI.Views.MainWindowPanels.ScenesPanelView"
+             x:DataType="vm:ProjectPanelViewModel">
+    <Border Padding="16" Background="White"
+            BorderBrush="#D9DEEA" BorderThickness="1" CornerRadius="6">
+		<StackPanel Spacing="10">
+			<TextBlock Text="Project" FontSize="22" FontWeight="Medium"
+					   Foreground="#111D57" Margin="12,4,0,12" />
+
+			<Grid Height="48">
+				<Border Background="#E9EDFF" CornerRadius="8"
+						IsVisible="{Binding IsScenesSelected}" />
+				<Button Command="{Binding SelectScenesCommand}"
+						Background="Transparent" BorderThickness="0"
+						Foreground="#1C2850" Padding="12,0"
+						HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+					<StackPanel Orientation="Horizontal" Spacing="14">
+						<PathIcon Data="{StaticResource SceneIcon}" Width="20" Height="20" />
+						<TextBlock Text="Scenes" FontSize="16" VerticalAlignment="Center" />
+					</StackPanel>
+				</Button>
+			</Grid>
+
+			<Grid Height="48">
+				<Border Background="#E9EDFF" CornerRadius="8"
+						IsVisible="{Binding IsStoryValuesSelected}" />
+				<Button Command="{Binding SelectStoryValuesCommand}"
+						Background="Transparent" BorderThickness="0"
+						Foreground="#1C2850" Padding="12,0"
+						HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+					<StackPanel Orientation="Horizontal" Spacing="14">
+						<PathIcon Data="{StaticResource ValuesIcon}" Width="20" Height="20" />
+						<TextBlock Text="Story values" FontSize="16" VerticalAlignment="Center" />
+					</StackPanel>
+				</Button>
+			</Grid>
+		</StackPanel>
+    </Border>
+</UserControl>

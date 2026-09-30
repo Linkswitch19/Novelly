@@ -1,0 +1,57 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:VnEditor.UI.ViewModels"
+             x:Class="VnEditor.UI.Views.MainWindowPanels.MediaPanelView"
+             x:DataType="vm:ProjectPanelViewModel">
+    <Border Padding="16" Background="White"
+            BorderBrush="#D9DEEA" BorderThickness="1" CornerRadius="6">
+		<StackPanel Spacing="10">
+			<TextBlock Text="Media" FontSize="22" FontWeight="Medium"
+				Foreground="#111D57" Margin="12,4,0,12" />
+
+			<StackPanel Spacing="6">
+				<Grid Height="48">
+					<Border Background="#E9EDFF" CornerRadius="8"
+							IsVisible="{Binding IsCharactersSelected}" />
+					<Button Command="{Binding SelectCharactersCommand}"
+							Background="Transparent" BorderThickness="0"
+							Foreground="#1C2850" Padding="12,0"
+							HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+						<StackPanel Orientation="Horizontal" Spacing="14">
+							<PathIcon Data="{StaticResource CharacterIcon}" Width="20" Height="20" />
+							<TextBlock Text="Characters" FontSize="16" VerticalAlignment="Center" />
+						</StackPanel>
+					</Button>
+				</Grid>
+
+				<Grid Height="48">
+					<Border Background="#E9EDFF" CornerRadius="8"
+							IsVisible="{Binding IsBackgroundsSelected}" />
+					<Button Command="{Binding SelectBackgroundsCommand}"
+							Background="Transparent" BorderThickness="0"
+							Foreground="#1C2850" Padding="12,0"
+							HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+						<StackPanel Orientation="Horizontal" Spacing="14">
+							<PathIcon Data="{StaticResource BackgroundIcon}" Width="20" Height="20" />
+							<TextBlock Text="Backgrounds" FontSize="16" VerticalAlignment="Center" />
+						</StackPanel>
+					</Button>
+				</Grid>
+
+				<Grid Height="48">
+					<Border Background="#E9EDFF" CornerRadius="8"
+							IsVisible="{Binding IsMusicSelected}" />
+					<Button Command="{Binding SelectMusicCommand}"
+							Background="Transparent" BorderThickness="0"
+							Foreground="#1C2850" Padding="12,0"
+							HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+						<StackPanel Orientation="Horizontal" Spacing="14">
+							<PathIcon Data="{StaticResource MusicIcon}" Width="20" Height="20" />
+							<TextBlock Text="Music" FontSize="16" VerticalAlignment="Center" />
+						</StackPanel>
+					</Button>
+				</Grid>
+			</StackPanel>
+		</StackPanel>
+    </Border>
+</UserControl>

@@ -1,22 +1,57 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:VnEditor.UI.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:panels="using:VnEditor.UI.Views.MainWindowPanels"
         x:Class="VnEditor.UI.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="VnEditor.UI">
+        Width="1280" Height="800"
+        MinWidth="960" MinHeight="640"
+        Background="#F4F6FA"
+        RequestedThemeVariant="Light"
+        Title="Novelly">
+	<Grid Margin="8">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1.1*" MinWidth="190" />
+			<ColumnDefinition Width="6" />
+			<ColumnDefinition Width="3.8*" MinWidth="360" />
+			<ColumnDefinition Width="6" />
+			<ColumnDefinition Width="1.3*" MinWidth="220" />
+		</Grid.ColumnDefinitions>
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
+		<!-- Navigazione e media condividono il ViewModel del progetto. -->
+		<Grid Grid.Column="0" DataContext="{Binding ProjectPanel}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" MinHeight="200" />
+				<RowDefinition Height="6" />
+				<RowDefinition Height="1.3*" MinHeight="260" />
+			</Grid.RowDefinitions>
 
-    <TextBox Text="{Binding Greeting}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+			<panels:ScenesPanelView Grid.Row="0" />
+			<GridSplitter Grid.Row="1" Background="#E6EAF2"
+                          ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" />
+			<panels:MediaPanelView Grid.Row="2" />
+		</Grid>
 
+		<GridSplitter Grid.Column="1" Background="#E6EAF2"
+                      ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" />
+
+		<!-- Anteprima e timeline occupano la colonna centrale. -->
+		<Grid Grid.Column="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="3*" MinHeight="280" />
+				<RowDefinition Height="6" />
+				<RowDefinition Height="1.4*" MinHeight="160" />
+			</Grid.RowDefinitions>
+
+			<panels:PreviewPanelView Grid.Row="0" />
+			<GridSplitter Grid.Row="1" Background="#E6EAF2"
+                          ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" />
+			<panels:TimelinePanelView Grid.Row="2" />
+		</Grid>
+
+		<GridSplitter Grid.Column="3" Background="#E6EAF2"
+                      ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" />
+
+		<panels:DetailsPanelView Grid.Column="4" />
+	</Grid>
 </Window>

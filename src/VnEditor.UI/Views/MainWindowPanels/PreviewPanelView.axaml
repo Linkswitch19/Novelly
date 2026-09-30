@@ -1,0 +1,29 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="VnEditor.UI.Views.MainWindowPanels.PreviewPanelView">
+    <Border Padding="16" Background="White"
+            BorderBrush="#D9DEEA" BorderThickness="1" CornerRadius="6">
+		<Grid RowDefinitions="Auto,*">
+			<TextBlock Text="Preview" FontSize="22" FontWeight="Medium"
+					   Foreground="#111D57" />
+
+			<StackPanel Grid.Row="1" Spacing="12" MaxWidth="360"
+						HorizontalAlignment="Center" VerticalAlignment="Center">
+				<Border Width="72" Height="72" Background="#EEF1FF"
+						CornerRadius="20" HorizontalAlignment="Center">
+					<PathIcon Data="{StaticResource SceneIcon}" Width="32" Height="32"
+							  Foreground="#4057A7" HorizontalAlignment="Center"
+							  VerticalAlignment="Center" />
+				</Border>
+
+				<TextBlock Text="No story open" FontSize="22" FontWeight="Medium"
+						   Foreground="#1C2850" TextAlignment="Center"
+						   TextWrapping="Wrap" />
+
+				<TextBlock Text="Scene previews will appear here after you open a story."
+						   FontSize="14" Foreground="#66718B"
+						   TextAlignment="Center" TextWrapping="Wrap" />
+			</StackPanel>
+		</Grid>
+    </Border>
+</UserControl>
