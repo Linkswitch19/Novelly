@@ -1,0 +1,83 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:VnEditor.UI.ViewModels"
+        x:Class="VnEditor.UI.Views.Dialogs.NewProjectDialogView"
+        x:DataType="vm:NewProjectDialogViewModel"
+        Title="New project"
+        Width="560"
+        SizeToContent="Height"
+        CanResize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        RequestedThemeVariant="Light"
+        Background="#F4F6FA">
+
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Escape" Command="{Binding CancelCommand}" />
+    </Window.KeyBindings>
+
+    <StackPanel Margin="24" Spacing="20">
+        <StackPanel Spacing="8">
+            <TextBlock Text="New project"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Foreground="#111D57" />
+
+            <TextBlock Text="Give your story a name and choose where to keep it."
+                       TextWrapping="Wrap"
+                       Foreground="#66718B" />
+        </StackPanel>
+
+        <StackPanel Spacing="16" IsEnabled="{Binding !IsBusy}">
+            <StackPanel Spacing="6">
+                <TextBlock Text="Project name"
+                           FontWeight="Medium"
+                           Foreground="#1C2850" />
+
+                <TextBox x:Name="ProjectNameTextBox"
+                         Text="{Binding ProjectName, Mode=TwoWay}"
+                         Watermark="Enter a project name" />
+            </StackPanel>
+
+            <StackPanel Spacing="6">
+                <TextBlock Text="Project folder"
+                           FontWeight="Medium"
+                           Foreground="#1C2850" />
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBox Grid.Column="0"
+                             Text="{Binding ProjectFolder, Mode=TwoWay}"
+                             Watermark="Enter or choose a folder" />
+
+                    <Button Grid.Column="1"
+                            Margin="8,0,0,0"
+                            Content="Browse..."
+                            Command="{Binding BrowseCommand}"
+                            VerticalAlignment="Stretch" />
+                </Grid>
+
+                <TextBlock Text="Choose a new or empty folder. Your project files will be stored there."
+                           TextWrapping="Wrap"
+                           FontSize="12"
+                           Foreground="#66718B" />
+            </StackPanel>
+        </StackPanel>
+
+        <ProgressBar Height="3"
+                     IsIndeterminate="True"
+                     IsVisible="{Binding IsBusy}" />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8">
+            <Button Content="Cancel"
+                    MinWidth="90"
+                    Command="{Binding CancelCommand}" />
+
+            <Button Content="Create"
+                    MinWidth="90"
+                    IsDefault="True"
+                    Command="{Binding CreateCommand}" />
+        </StackPanel>
+    </StackPanel>
+</Window>

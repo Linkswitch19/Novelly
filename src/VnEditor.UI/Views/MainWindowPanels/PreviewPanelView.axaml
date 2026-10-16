@@ -1,6 +1,8 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="VnEditor.UI.Views.MainWindowPanels.PreviewPanelView">
+             xmlns:vm="using:VnEditor.UI.ViewModels"
+             x:Class="VnEditor.UI.Views.MainWindowPanels.PreviewPanelView"
+             x:DataType="vm:MainViewModel">
     <Border Padding="16" Background="White"
             BorderBrush="#D9DEEA" BorderThickness="1" CornerRadius="6">
 		<Grid RowDefinitions="Auto,*">
@@ -16,13 +18,27 @@
 							  VerticalAlignment="Center" />
 				</Border>
 
-				<TextBlock Text="No story open" FontSize="22" FontWeight="Medium"
+				<TextBlock Text="No story open"
+						   IsVisible="{Binding !HasProject}"
+						   FontSize="22" FontWeight="Medium"
 						   Foreground="#1C2850" TextAlignment="Center"
 						   TextWrapping="Wrap" />
 
-				<TextBlock Text="Scene previews will appear here after you open a story."
-						   FontSize="14" Foreground="#66718B"
-						   TextAlignment="Center" TextWrapping="Wrap" />
+				<TextBlock Text="Create or open a project from the File menu."
+                           IsVisible="{Binding !HasProject}"
+                           FontSize="14" Foreground="#66718B"
+                           TextAlignment="Center" TextWrapping="Wrap" />
+
+				<TextBlock Text="{Binding ProjectTitle}"
+                           IsVisible="{Binding HasProject}"
+                           FontSize="22" FontWeight="Medium"
+                           Foreground="#1C2850" TextAlignment="Center"
+                           TextWrapping="Wrap" />
+
+				<TextBlock Text="Your project is open. Scene preview is not available yet."
+                           IsVisible="{Binding HasProject}"
+                           FontSize="14" Foreground="#66718B"
+                           TextAlignment="Center" TextWrapping="Wrap" />
 			</StackPanel>
 		</Grid>
     </Border>

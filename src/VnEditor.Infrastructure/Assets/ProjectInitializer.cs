@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VnEditor.Infrastructure.Projects;
 
 namespace VnEditor.Infrastructure.Assets;
+
 /// <summary>
-/// Crea la struttura del progetto Ren'Py nascosto copiando il template
-/// e preparando le cartelle per gli asset.
-/// L'utente non vede mai questa cartella: la gestisce l'app.
+/// Prepara la struttura Ren'Py del progetto copiando il template
+/// quando .renpy_game non esiste.
+/// Garantisce le cartelle game/images e game/audio anche nei progetti
+/// già inizializzati, senza sovrascrivere i file esistenti.
 /// </summary>
-/// 
 public sealed class ProjectInitializer
 {
     private readonly string _templatePath;
@@ -24,33 +26,28 @@ public sealed class ProjectInitializer
     /// Crea la cartella .renpy_game dentro la cartella del progetto utente,
     /// copiando il template. Se esiste già, non fa nulla.
     /// </summary>
-    
-    public string Initialize(string projectFolder)
+
+    public string Initialize(
+            string projectFolder,
+            CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(projectFolder);
+        cancellationToken.ThrowIfCancellationRequested();
+
         string gameFolder = Path.Combine(projectFolder, ".renpy_game");
+
         if (!Directory.Exists(gameFolder))
-            CopyDirectory(_templatePath, gameFolder);
+            ProjectDirectoryCopier.Copy(_templatePath, gameFolder, cancellationToken);
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        Directory.CreateDirectory(Path.Combine(gameFolder, "game", "images"));
+        Directory.CreateDirectory(Path.Combine(gameFolder, "game", "audio"));
+
         return gameFolder;
     }
 
-    private static void CopyDirectory(string source, string destination)
-    {
-        Directory.CreateDirectory(destination);
-        foreach (string file in Directory.GetFiles(source))
-        {
-            string destFiles = Path.Combine(destination, Path.GetFileName(file));
-            File.Copy(file, destFiles, overwrite: true);
 
-        }
-
-        foreach (string subDir in Directory.GetDirectories(source))
-        {
-            string destSubDir = Path.Combine(
-                destination, Path.GetFileName(subDir));
-            CopyDirectory(subDir, destSubDir);
-        }
-    }
 
 
 }

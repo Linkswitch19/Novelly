@@ -7,9 +7,9 @@ using VnEditor.Domain;
 namespace VnEditor.Infrastructure.History;
 
 /// <summary>
-/// Implementazione di <see cref="IProjectHistory"/> che esegue le modifiche 
-/// sul progetto corrente in modo diretto, senza conservarne la cronologia (nessun supporto per Undo/Redo).
-/// Risulta utile in contesti di test, in fase di caricamento iniziale o quando il tracciamento non è richiesto.
+/// Esegue direttamente le modifiche sul progetto corrente e notifica
+/// gli osservatori, senza conservare la cronologia.
+/// Non implementa Undo/Redo né il ripristino delle modifiche fallite.
 /// </summary>
 
 public sealed class PassThroughProjectHistory : IProjectHistory
@@ -27,21 +27,37 @@ public sealed class PassThroughProjectHistory : IProjectHistory
 
     public Project CurrentProject { get; }
 
+    /// <inheritdoc />
+    public event EventHandler? Changed;
+
     /// <summary>
-    /// Esegue l'azione di modifica specificata direttamente sul progetto corrente.
-    /// La descrizione viene validata ma non conservata.
-    /// La chiave di raggruppamento viene accettata e ignorata.
+    /// Valida gli argomenti ed esegue direttamente la modifica.
+    /// Dopo l'esecuzione notifica gli osservatori anche se il delegato
+    /// fallisce, perché il progetto potrebbe essere stato modificato
+    /// parzialmente. La descrizione non viene conservata e la chiave
+    /// di raggruppamento viene ignorata.
     /// </summary>
-    /// <param name="description">Breve descrizione dell'operazione (es. "Cambio nome scena").</param>
-    /// <param name="edit">L'azione che applica concretamente la modifica allo stato del progetto.</param>
-    /// <param name="mergeKey">Chiave opzionale per raggruppare modifiche simili (ignorata in questa implementazione).</param>
-    /// <exception cref="ArgumentException">Lanciata se la descrizione è nulla o composta da soli spazi.</exception>
-    /// <exception cref="ArgumentNullException">Lanciata se l'azione di modifica (<paramref name="edit"/>) è nulla.</exception>
+    /// <param name="description">Nome dell'azione mostrabile all'utente.</param>
+    /// <param name="edit">Modifica da eseguire sul progetto corrente.</param>
+    /// <param name="mergeKey">Chiave di raggruppamento, ignorata.</param>
+    /// <exception cref="ArgumentException">
+    /// La descrizione è nulla, vuota o composta soltanto da spazi.
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    /// Il delegato di modifica è nullo.
+    /// </exception>
     public void Edit(string description, Action<Project> edit, string? mergeKey = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(description);
         ArgumentNullException.ThrowIfNull(edit);
-
-        edit(CurrentProject);
+        try
+        {
+            edit(CurrentProject);
+        }
+        finally
+        {
+            Changed?.Invoke(this, EventArgs.Empty);
+        }
+        
     }
 }
