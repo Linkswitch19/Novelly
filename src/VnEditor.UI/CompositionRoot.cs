@@ -111,7 +111,7 @@ public static class CompositionRoot
             new NewProjectAction(session, dialogs, workspace, historyFactory, unsavedChanges),
             errors,
             "Unable to create project",
-            "The project could not be created. Choose a new or empty folder and try again.");
+            "The project could not be created. Check the project name and selected location, then try again.");
 
         IProjectFileAction openAction = new ErrorHandlingProjectFileAction(
             new OpenProjectAction(session, dialogs, persistence, historyFactory, unsavedChanges),
@@ -123,7 +123,7 @@ public static class CompositionRoot
             new SaveProjectAsAction(session, dialogs, workspace),
             errors,
             "Unable to save project",
-            "The project could not be saved to the selected folder. Choose a new or empty folder and try again.");
+            "The project could not be saved. Choose a new or empty destination folder and try again.");
 
         IProjectFileAction closeAction = new ErrorHandlingProjectFileAction(
             new ConfirmProjectCloseAction(unsavedChanges),

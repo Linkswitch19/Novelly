@@ -6,15 +6,15 @@ using VnEditor.AppService.Projects;
 using VnEditor.AppService.Sessions;
 using VnEditor.Domain;
 using VnEditor.AppService.Interaction;
+using System.IO;
 
 namespace VnEditor.AppService.Projects.Actions;
 
 /// <summary>
-/// Esegue il caso d'uso New raccogliendo i dati del progetto,
-/// verificando le modifiche non salvate e delegando la creazione
-/// al servizio workspace.
-/// Attiva il nuovo progetto soltanto se la sessione corrisponde
-/// ancora alla revisione approvata.
+/// Raccoglie nome e posizione del nuovo progetto e determina
+/// una sottocartella con il nome indicato.
+/// Verifica le modifiche non salvate, delega la creazione al workspace
+/// e attiva il risultato soltanto se la sessione non è cambiata.
 /// </summary>
 public sealed class NewProjectAction : IProjectFileAction
 {
@@ -52,36 +52,76 @@ public sealed class NewProjectAction : IProjectFileAction
     }
 
     /// <summary>
-    /// Esegue in modo asincrono il flusso completo di creazione e attivazione di un nuovo progetto.
+    /// Richiede nome e posizione del nuovo progetto, determina la sottocartella
+    /// di destinazione e ne delega la creazione al workspace.
     /// </summary>
+    /// <remarks>
+    /// La posizione scelta dall'utente è la cartella genitore:
+    /// il nome del progetto identifica la sottocartella da creare.
+    /// Prima della creazione verifica il nome e gestisce le eventuali
+    /// modifiche non salvate del progetto corrente.
+    /// Il nuovo progetto viene attivato come non salvato soltanto se
+    /// la revisione della sessione coincide ancora con quella approvata.
+    /// Se la sessione cambia durante la creazione, la cartella può essere
+    /// stata creata sul disco, ma il progetto corrente non viene sostituito.
+    /// Gli errori operativi vengono propagati al decoratore incaricato
+    /// di presentarli all'utente.
+    /// </remarks>
     /// <returns>
-    /// Un'attività asincrona il cui risultato è <see langword="true"/> se il nuovo progetto è stato creato e impostato 
-    /// come progetto attivo nella sessione; <see langword="false"/> se l'utente ha annullato la finestra di creazione, 
-    /// se non è stato possibile lasciare il progetto corrente o se si è verificato un conflitto di revisione durante la preparazione.
+    /// Un'attività che restituisce <see langword="true"/> quando il progetto
+    /// è stato creato e attivato; <see langword="false"/> se l'utente annulla,
+    /// il nome non è accettabile, non è possibile lasciare il progetto corrente
+    /// oppure la sessione cambia durante la creazione.
     /// </returns>
+    /// <exception cref="ArgumentException">
+    /// La cartella genitore è nulla, vuota o composta soltanto da spazi,
+    /// oppure il percorso di destinazione non è valido.
+    /// </exception>
+    /// <exception cref="IOException">
+    /// La destinazione non è disponibile oppure si verifica un errore
+    /// durante la creazione o la copia dei contenuti.
+    /// </exception>
+    /// <exception cref="UnauthorizedAccessException">
+    /// L'accesso richiesto al filesystem non è consentito.
+    /// </exception>
     public async Task<bool> ExecuteAsync()
     {
-        NewProjectRequest? request = await this._dialogs.ShowNewProjectAsync();
+        NewProjectRequest? request = await _dialogs.ShowNewProjectAsync();
 
         if (request is null)
             return false;
 
-        if (!await this._unsavedChanges.CanLeaveAsync())
+        string projectName = request.ProjectName.Trim();
+
+        if (!IsSingleFolderName(projectName))
+        {
+            await _dialogs.ShowErrorAsync(
+                "Invalid project name",
+                "Choose a project name that can be used as a folder name. Do not enter a path.");
+
+            return false;
+        }
+
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.ParentFolder);
+
+        string projectFolder = Path.GetFullPath(
+            Path.Combine(request.ParentFolder, projectName));
+
+        if (!await _unsavedChanges.CanLeaveAsync())
             return false;
 
-        long? expectedRevision = this._session.CaptureCurrentRevision();
+        long? expectedRevision = _session.CaptureCurrentRevision();
 
-        Project project = await this._workspace.CreateAsync(
-            request.ProjectName, request.ProjectFolder);
+        Project project = await _workspace.CreateAsync(projectName, projectFolder);
 
-        IProjectHistory history = this._historyFactory.Create(project);
+        IProjectHistory history = _historyFactory.Create(project);
 
-        bool activated = this._session.TrySetProject(
-            history, request.ProjectFolder, false, expectedRevision);
+        bool activated = _session.TrySetProject(
+            history, projectFolder, false, expectedRevision);
 
         if (!activated)
         {
-            await this._dialogs.ShowErrorAsync(
+            await _dialogs.ShowErrorAsync(
                 "Project changed",
                 "The current project changed while the new project was being prepared. Please try again.");
 
@@ -89,5 +129,38 @@ public sealed class NewProjectAction : IProjectFileAction
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Verifica che il nome possa rappresentare una singola cartella
+    /// e non un percorso verso un'altra posizione.
+    /// </summary>
+    /// <param name="name">
+    /// Nome del progetto, già privato degli spazi iniziali e finali.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> se il nome contiene testo, non coincide con
+    /// "." o "..", non termina con un punto e non contiene separatori
+    /// o caratteri vietati nei nomi di file dalla piattaforma corrente;
+    /// altrimenti <see langword="false"/>.
+    /// </returns>
+    /// <remarks>
+    /// Non accede al filesystem e non verifica la disponibilità della destinazione.
+    /// Gli ulteriori vincoli imposti dal filesystem vengono gestiti
+    /// dal servizio Infrastructure durante la creazione.
+    /// </remarks>
+    private static bool IsSingleFolderName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return false;
+
+        if (name is "." or "..")
+            return false;
+
+        if (name.EndsWith('.'))
+            return false;
+
+        return name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0
+            && name.IndexOfAny(['/', '\\']) < 0;
     }
 }

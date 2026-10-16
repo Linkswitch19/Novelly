@@ -8,10 +8,10 @@ using VnEditor.AppService.Interaction;
 namespace VnEditor.UI.ViewModels;
 
 /// <summary>
-/// Gestisce lo stato e la logica di presentazione del dialogo modale di creazione di un nuovo progetto.
-/// Permette l'inserimento del nome del progetto e della directory di destinazione, supportando
-/// la selezione guidata della cartella tramite finestra di dialogo di sistema.
-/// Notifica l'esito della finestra tramite l'evento <see cref="CloseRequested"/>.
+/// Gestisce i campi e i comandi del dialogo New project.
+/// Raccoglie il nome del progetto e la cartella genitore scelta dall'utente,
+/// supportando la selezione della posizione tramite dialogo di sistema.
+/// Restituisce i dati tramite CloseRequested senza creare cartelle.
 /// </summary>
 public partial class NewProjectDialogViewModel : ViewModelBase
 {
@@ -26,12 +26,13 @@ public partial class NewProjectDialogViewModel : ViewModelBase
     private string _projectName = string.Empty;
 
     /// <summary>
-    /// Ottiene o imposta il percorso sul disco in cui allocare la cartella del progetto.
-    /// Ogni modifica notifica a <see cref="CreateCommand"/> di verificare se può essere eseguito.
+    /// Ottiene o imposta la cartella genitore nella quale creare il progetto.
+    /// La sottocartella con il nome del progetto viene determinata dal caso d'uso New.
+    /// Ogni modifica aggiorna l'abilitazione di CreateCommand.
     /// </summary>
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CreateCommand))]
-    private string _projectFolder = string.Empty;
+    private string _parentFolder = string.Empty;
 
     /// <summary>
     /// Ottiene o imposta un valore che indica se è in corso un'operazione asincrona (ad esempio l'apertura del selettore cartella).
@@ -73,7 +74,7 @@ public partial class NewProjectDialogViewModel : ViewModelBase
         if (!CanCreate())
             return;
 
-        NewProjectRequest request = new(ProjectName.Trim(), ProjectFolder.Trim());
+        NewProjectRequest request = new(ProjectName.Trim(), ParentFolder.Trim());
 
         CloseRequested?.Invoke(request);
     }
@@ -92,8 +93,8 @@ public partial class NewProjectDialogViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Comando asincrono associato al pulsante di navigazione ("Sfoglia").
-    /// Apre la finestra di dialogo del file system per selezionare la cartella di destinazione.
+    /// Apre il selettore di sistema per scegliere la cartella genitore
+    /// nella quale verrà creata la sottocartella del progetto.
     /// </summary>
     [RelayCommand(CanExecute = nameof(CanInteract))]
     private async Task BrowseAsync()
@@ -105,15 +106,15 @@ public partial class NewProjectDialogViewModel : ViewModelBase
 
         try
         {
-            string? suggestedFolder = string.IsNullOrWhiteSpace(ProjectFolder)
-                ? null
-                : ProjectFolder;
+            string? suggestedFolder = string.IsNullOrWhiteSpace(ParentFolder)
+                 ? null
+                 : ParentFolder;
 
             string? selectedFolder = await _dialogs.ChooseProjectFolderAsync(
-                "Choose project folder", suggestedFolder);
+                "Choose project location", suggestedFolder);
 
             if (selectedFolder is not null)
-                ProjectFolder = selectedFolder;
+                ParentFolder = selectedFolder;
         }
         catch (Exception exception) when (IsFolderSelectionError(exception))
         {
@@ -138,7 +139,7 @@ public partial class NewProjectDialogViewModel : ViewModelBase
     {
         return CanInteract()
             && !string.IsNullOrWhiteSpace(ProjectName)
-            && !string.IsNullOrWhiteSpace(ProjectFolder);
+            && !string.IsNullOrWhiteSpace(ParentFolder);
     }
 
     /// <summary>

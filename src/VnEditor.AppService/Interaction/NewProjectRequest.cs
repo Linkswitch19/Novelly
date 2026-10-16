@@ -5,8 +5,9 @@ using System.Text;
 namespace VnEditor.AppService.Interaction;
 
 /// <summary>
-/// Contiene il nome e la cartella scelti dall'utente
-/// come dati di ingresso del caso d'uso di creazione del progetto.
+/// Contiene il nome del progetto e la cartella genitore scelta dall'utente.
+/// Il caso d'uso New determina la destinazione creando una sottocartella
+/// con il nome del progetto all'interno della posizione indicata.
 /// </summary>
-public sealed record NewProjectRequest(string ProjectName, string ProjectFolder);
+public sealed record NewProjectRequest(string ProjectName, string ParentFolder);
 
