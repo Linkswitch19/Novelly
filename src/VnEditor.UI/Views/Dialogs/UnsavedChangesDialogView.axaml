@@ -1,0 +1,50 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="VnEditor.UI.Views.Dialogs.UnsavedChangesDialogView"
+        Title="Unsaved changes"
+        Width="520"
+        SizeToContent="Height"
+        CanResize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        RequestedThemeVariant="Light"
+        Background="#F4F6FA">
+
+    <StackPanel Margin="24" Spacing="20">
+        <StackPanel Spacing="10">
+            <TextBlock Text="Save changes before continuing?"
+                       FontSize="22"
+                       FontWeight="SemiBold"
+                       Foreground="#111D57"
+                       TextWrapping="Wrap" />
+
+            <TextBlock x:Name="ProjectNameTextBlock"
+                       FontSize="16"
+                       FontWeight="Medium"
+                       Foreground="#1C2850"
+                       TextWrapping="Wrap" />
+
+            <TextBlock Text="This project has unsaved changes. If you continue without saving, those changes will be lost."
+                       Foreground="#66718B"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8">
+            <Button Content="Cancel"
+                    MinWidth="90"
+                    IsCancel="True"
+                    Click="OnCancelClick" />
+
+            <Button Content="Discard"
+                    MinWidth="90"
+                    Click="OnDiscardClick" />
+
+            <Button Content="Save"
+                    MinWidth="90"
+                    IsDefault="True"
+                    Click="OnSaveClick" />
+        </StackPanel>
+    </StackPanel>
+</Window>

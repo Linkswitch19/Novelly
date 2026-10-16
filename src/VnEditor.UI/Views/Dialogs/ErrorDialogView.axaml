@@ -1,0 +1,32 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="VnEditor.UI.Views.Dialogs.ErrorDialogView"
+        Title="Unable to complete the operation"
+        Width="520"
+        SizeToContent="Height"
+        CanResize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        RequestedThemeVariant="Light"
+        Background="#F4F6FA">
+
+    <StackPanel Margin="24" Spacing="20">
+        <TextBlock x:Name="ErrorTitleTextBlock"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   Foreground="#111D57"
+                   TextWrapping="Wrap" />
+
+        <TextBlock x:Name="ErrorMessageTextBlock"
+                   FontSize="14"
+                   Foreground="#66718B"
+                   TextWrapping="Wrap" />
+
+        <Button Content="OK"
+                MinWidth="90"
+                HorizontalAlignment="Right"
+                IsDefault="True"
+                IsCancel="True"
+                Click="OnCloseClick" />
+    </StackPanel>
+</Window>

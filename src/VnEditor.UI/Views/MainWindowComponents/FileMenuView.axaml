@@ -1,0 +1,32 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:VnEditor.UI.ViewModels"
+             x:Class="VnEditor.UI.Views.MainWindowComponents.FileMenuView"
+             x:DataType="vm:FileMenuViewModel">
+
+    <Border Background="White"
+            BorderBrush="#D9DEEA"
+            BorderThickness="0,0,0,1"
+            Padding="8,0">
+        <Menu Background="Transparent">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New..."
+                          Command="{Binding NewCommand}"
+                          InputGesture="Ctrl+N" />
+
+                <MenuItem Header="_Open..."
+                          Command="{Binding OpenCommand}"
+                          InputGesture="Ctrl+O" />
+
+                <Separator />
+
+                <MenuItem Header="_Save"
+                          Command="{Binding SaveCommand}"
+                          InputGesture="Ctrl+S" />
+
+                <MenuItem Header="Save _As..."
+                          Command="{Binding SaveAsCommand}" />
+            </MenuItem>
+        </Menu>
+    </Border>
+</UserControl>
